@@ -6,9 +6,9 @@
 template <class Process, class Item>
 void inorder(Process f, btNode<Item>* nodePtr){
 	if(nodePtr!=NULL){
-		inorder(f,nodePtr->getleft());
+		inorder(f,nodePtr->getLeft());
 		f(nodePtr->getData());
-		inorder(f,nodePtr->getright());
+		inorder(f,nodePtr->getRight());
 	}
 }
 
@@ -16,16 +16,16 @@ template <class Process, class Item>
 void preorder(Process f, btNode<Item>* nodePtr){
 	if(nodePtr!=NULL){
 		f(nodePtr->getData());
-		preorder(f,nodePtr->getleft());
-		preorder(f,nodePtr->getright());
+		preorder(f,nodePtr->getLeft());
+		preorder(f,nodePtr->getRight());
 	}	
 }
 
 template <class Process, class Item>
 void postorder(Process f, btNode<Item>* nodePtr){
 	if(nodePtr!=NULL){
-		postorder(f,nodePtr->getleft());
-		postorder(f,nodePtr->getright());
+		postorder(f,nodePtr->getLeft());
+		postorder(f,nodePtr->getRight());
 		f(nodePtr->getData());
 	}
 }
@@ -39,16 +39,18 @@ void print(btNode<Item>* nodePtr, SizeType depth){
 		cout<<nodePtr->getData()<<"[leaf]"<<"\n";
 	else{
 		cout<<nodePtr->getData()<<"\n";
-		print(nodePtr->getright(),depth+1);
-		print(nodePtr->getleft(),depth+1);
+		print(nodePtr->getRight(),depth+1);
+		print(nodePtr->getLeft(),depth+1);
 	}
 }
 
 template <class Item>
 void clearTree(btNode<Item>*& rootPtr){
 	if(rootPtr!=NULL){
-		clearTree(rootPtr->getleft());
-		clearTree(rootPtr->getright());
+		btNode<Item>* leftPtr=rootPtr->getLeft();
+		btNode<Item>* rightPtr=rootPtr->getRight();
+		clearTree(leftPtr);
+		clearTree(rightPtr);
 		delete rootPtr;
 		rootPtr = NULL;
 	}
@@ -56,15 +58,20 @@ void clearTree(btNode<Item>*& rootPtr){
 
 template <class Item>
 btNode<Item>* copyTree(const btNode<Item>* rootPtr){
-	btNode<Item>* newLeftPtr, newRightPtr;//create new root
-	if(rootPtr==NULL)
+	btNode<Item>* newLeftPtr;
+	btNode<Item>* newRightPtr;//create new root
+	if(rootPtr==NULL){
 		return NULL;
+	}
 	else{
-		newLeftPtr=copyTree(rootPtr->getleft());
-		newLeftPtr=copyTree(rootPtr->getright());
-		return new btNode<Item> newRootPtr(rootPtr->getData(),
-											newLeftPtr,
-											newRightPtr)
+		newLeftPtr=copyTree(rootPtr->getLeft());
+		newRightPtr=copyTree(rootPtr->getRight());
+		//new btNode<Item>* (newRootPtr->getData(),newLeftPtr,newRightPtr);
+		// newRootPtr->setData(rootPtr->getData());
+		// newRootPtr->setLeft(newLeftPtr);
+		// newRootPtr->setRight(newRightPtr);
+		// newRootPtr->setParent(NULL);
+		return new btNode<Item>(rootPtr->getData(),newLeftPtr,newRightPtr);
 	}
 }
 
@@ -73,7 +80,7 @@ size_t treeSize(const btNode<Item>* nodePtr){
 	if(nodePtr==NULL)
 		return 0;
 	else
-		return 1 + treeSize(nodePtr->getleft()
-				+treeSize(nodePtr->getright()));
+		return 1 + treeSize(nodePtr->getLeft()
+				+treeSize(nodePtr->getRight()));
 }
 #endif
