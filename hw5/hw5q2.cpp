@@ -32,8 +32,9 @@ template <class Item>
 void binaryTree<Item>::createFirstNode(const Item& entry){//Precondition: size() is zero.
 //Postcondition: The tree now has one node (a root node), containing the
 //specified entry. This new root node is the "current node."
-	if(count=0){//size()?
-		root->setData(entry);
+	if(count==0){//size()?
+		//root->setData(entry);
+		root = new btNode<Item>(entry);
 		curr=root;
 		count=1;
 	}
@@ -85,9 +86,10 @@ void binaryTree<Item>::addLeft(const Item& entry){//Precondition: size() > 0, an
 //returns false.
 //Postcondition: A left child has been added to the "current node", with the given entry.
 	if(count>0&&!hasLeft()){
-		btNode<Item>* nleft;
-		nleft->setData(entry);
+		btNode<Item>* nleft = new btNode<Item>(entry);
 		curr->setLeft(nleft);
+		nleft->setParent(curr);
+		count++;
 	}
 }
 
@@ -96,9 +98,10 @@ void binaryTree<Item>::addRight(const Item& entry){//Precondition: size() > 0, a
 //hasRight() returns false.
 //Postcondition: A right child has been added to the "current node", with the given entry.
 	if(count>0&&!hasRight()){
-		btNode<Item>* nright;
-		nright->setData(entry);
-		curr->setLeft(nright);
+		btNode<Item>* nright = new btNode<Item>(entry);
+		curr->setRight(nright);
+		nright->setParent(curr);
+		count++;
 	}
 }
 
@@ -109,6 +112,7 @@ void binaryTree<Item>::removeLeft(){//Precondition: size() > 0, hasLeft() return
 	if(count>0&&hasLeft()&&curr->getLeft()->isLeaf()){
 		delete curr->getLeft();
 		curr->setLeft(NULL);
+		count--;
 	}
 
 }
@@ -121,6 +125,7 @@ void binaryTree<Item>::removeRight(){//Precondition: size( ) > 0, hasRight( ) re
 	if(count>0&&hasRight()&&curr->getRight()->isLeaf()){
 		delete curr->getRight();//necessary?
 		curr->setRight(NULL);
+		count--;
 	}
 }
 
@@ -138,7 +143,6 @@ btNode<Item>* binaryTree<Item>::getNode(){//Precondition: size() > 0.
 //Postcondition: The return value is the btNode from the "current node".
 	if(count>0)
 		return curr;
-
 }
 
 template <class Item>
@@ -148,7 +152,7 @@ size_t binaryTree<Item>::size() const{//Postcondition: The return value is the n
 }
 
 template <class Item>
-Item binaryTree<Item>::retrieve() const{//Precondition: size()  > 0.
+Item binaryTree<Item>::retrieve() const{//Precondition: size() > 0.
 //Postcondition: The return value is the data from the "current node".
 	if(count>0)
 		return curr->getData();
@@ -157,7 +161,7 @@ Item binaryTree<Item>::retrieve() const{//Precondition: size()  > 0.
 template <class Item>
 bool binaryTree<Item>::hasParent() const{//Postcondition: Returns true if size() > 0, 
 //and the "current node" has a parent
-	return (count>0&&(curr->getParent()!=NULL));//double check this
+	return ((count>1)&&(curr->getParent()!=NULL));//double check this
 }
 
 template <class Item>
