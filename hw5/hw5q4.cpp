@@ -25,9 +25,10 @@ void BST<Item>::insert(const Item& entry){
 	if(prev==NULL)//If tree T was empty
 		tree.createFirstNode(entry);
 	else if(entry<prev->getData()){//entry or entryNode->getData()? Should be the same thing
-		tree.addLeft(entry);
+		//tree.addLeft(entry);
+		prev->setLeft(entryNode);
 	 }
-	else tree.addRight(entry);
+	else /*tree.addRight(entry);*/prev->setRight(entryNode);
 	count++;
 }
 
@@ -96,3 +97,4 @@ btNode<Item>* BST<Item>::search(const Item& target){
 	return curr;	
 }
 #endif
+

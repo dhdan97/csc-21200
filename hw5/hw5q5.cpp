@@ -24,12 +24,13 @@ Item Heap<Item>::removeMax(){
 }
 
 template <class Item>
-void maxHeapify(const size_t& i){
-	size_t l=2*i+1;//left() dont work
-	size_t r=2*i+2;//right() dont work
-	if(l<=count&&data[l]>data[i])//data not defined?? Is supposed to be private member variable
-	 	size_t largest=l;
-	 else size_t largest=i;
+void Heap<Item>::maxHeapify(const size_t& i){
+	size_t l=left(i);
+	size_t r=right(i);
+	size_t largest=INT_MIN;//int_min to ensure largest comparsion alwyays works
+	if(l<=count&&data[l]>data[i])
+		largest=l;
+	 else largest=i;
 	if(r<=count&&data[r]>data[largest])
 		largest=r;
 	if(largest!=i){
@@ -41,14 +42,14 @@ void maxHeapify(const size_t& i){
 template <class Item>
 void Heap<Item>::buildMaxHeap(){
 	count=capacity;
-	for(int i=floor(capacity/2),i==0,i--)
+	for(int i=floor(capacity/2);i==0;i--)
 		maxHeapify(i);
 }
 
 template <class Item>
 Item* Heap<Item>::heapsort(){
 	buildMaxHeap();
-	for(int i=capacity,i==1,i--){
+	for(int i=capacity;i==1;i--){
 		swap(data[0],data[i]);
 		count--;
 		maxHeapify(0);
@@ -66,3 +67,4 @@ Item Heap<Item>::maximum(){
 	
 }
 #endif
+
