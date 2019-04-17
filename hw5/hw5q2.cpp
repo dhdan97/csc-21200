@@ -15,7 +15,7 @@ binaryTree<Item>::binaryTree(){//Postcondition: The binary tree has been initial
 template <class Item>
 binaryTree<Item>::binaryTree(const binaryTree& source){//Postcondition: The binary tree has
 //been initalized as a tree that is a copy of it's source.
-	root=copyTree(source.root);
+	root=copyTree(source.root);//remember how copyTree returns a 'new' btNode
 	curr=root;
 	count=source.size();
 }
@@ -32,9 +32,8 @@ template <class Item>
 void binaryTree<Item>::createFirstNode(const Item& entry){//Precondition: size() is zero.
 //Postcondition: The tree now has one node (a root node), containing the
 //specified entry. This new root node is the "current node."
-	if(count==0){//size()?
-		//root->setData(entry);
-		root = new btNode<Item>(entry);
+	if(count==0){
+		root=new btNode<Item>(entry);
 		curr=root;
 		count=1;
 	}
@@ -51,7 +50,7 @@ template <class Item>
 void binaryTree<Item>::shiftUp(){//Precondition: hasParent() returns true.
 //Postcondition: The "current node" has been shifted up to the parent of
 //the old current node.
-	if(hasParent())//wrong syntax?
+	if(hasParent())
 		curr=curr->getParent();	
 }
 
@@ -77,7 +76,7 @@ template <class Item>
 void binaryTree<Item>::change(const Item& newEntry){//precondition: size() > 0.
 //postcondition: The data at the "current node" has been changed to the new entry.
 	if(count>0)
-		curr->getData()=newEntry;
+		curr->setData(newEntry);
 
 }
 
@@ -114,7 +113,6 @@ void binaryTree<Item>::removeLeft(){//Precondition: size() > 0, hasLeft() return
 		curr->setLeft(NULL);
 		count--;
 	}
-
 }
 
 
@@ -133,7 +131,13 @@ template <class Item>
 void binaryTree<Item>::setRoot(btNode<Item>* newRoot){//Precondition: size() > 0.
 //Postcondition: The root has been set to newRoot.
 	if(count>0){
-		root=newRoot;
+		newRoot->setLeft(root->getLeft());//Set links to and from newRoot to oldRoot's children
+		newRoot->setRight(root->getRight());
+		root->getRight()->setParent(newRoot);
+		root->getLeft()->setParent(newRoot);
+		btNode<Item>* oldRoot=root;		
+		root=newRoot;//point root of tree to new root
+		delete oldRoot;//deallocate memory of oldRoot
 		count=treeSize(root);
 	}
 }

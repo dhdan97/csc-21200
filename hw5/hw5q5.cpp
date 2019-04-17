@@ -20,16 +20,22 @@ void Heap<Item>::increaseKey(size_t i, const Item& entry){
 
 template <class Item>
 Item Heap<Item>::removeMax(){
-	return data[0];
+	if(!(count<1)){
+		Item max = data[0];
+		swap(max,data[count-1]);
+		count--;
+		maxHeapify(0);
+		return max;
+	}
 }
 
 template <class Item>
 void Heap<Item>::maxHeapify(const size_t& i){
 	size_t l=left(i);
 	size_t r=right(i);
-	size_t largest=INT_MIN;//int_min to ensure largest comparsion alwyays works
+	size_t largest=INT_MIN;
 	if(l<=count&&data[l]>data[i])
-		largest=l;
+	 	largest=l;
 	 else largest=i;
 	if(r<=count&&data[r]>data[largest])
 		largest=r;
@@ -59,12 +65,14 @@ Item* Heap<Item>::heapsort(){
 
 template <class Item>
 Item Heap<Item>::minimum(){
-
+    Item min=data[0]; 
+    for(size_t i=(1+count)/2;i<count;i++)//Ceiling(n/2) leaf nodes 
+        min=min(min,data[i]); 
+    return min; 
 }
 
 template <class Item>
 Item Heap<Item>::maximum(){
-	
+	return data[0];
 }
 #endif
-

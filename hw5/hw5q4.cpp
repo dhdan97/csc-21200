@@ -16,7 +16,7 @@ void BST<Item>::insert(const Item& entry){
 	btNode<Item>* curr=tree.getNode();
 	while(curr!=NULL){
 		prev=curr;
-		if(entry<curr->getData())//entry or entryNode->getData()? Should be the same thing
+		if(entry<curr->getData())
 			curr=curr->getLeft();
 		else
 			curr=curr->getRight();
@@ -24,11 +24,10 @@ void BST<Item>::insert(const Item& entry){
 	entryNode->setParent(prev);
 	if(prev==NULL)//If tree T was empty
 		tree.createFirstNode(entry);
-	else if(entry<prev->getData()){//entry or entryNode->getData()? Should be the same thing
-		//tree.addLeft(entry);
+	else if(entry<prev->getData()){//ask why doesn't addLeft/addRight work
 		prev->setLeft(entryNode);
 	 }
-	else /*tree.addRight(entry);*/prev->setRight(entryNode);
+	else prev->setRight(entryNode);
 	count++;
 }
 
@@ -36,9 +35,9 @@ template <class Item>
 void BST<Item>::remove(const Item& target){
 	btNode<Item>* curr=tree.search(target);
 	btNode<Item>* currSuccessor;
-	if(curr->getLeft()==NULL)
+	if(!tree.hasLeft())
 		tree.transplant(curr,curr->getRight());
-	else if(curr->getRight()==NULL)
+	else if(!tree.hasRight())
 		tree.transplant(curr,curr->getLeft());
 	else{
 		currSuccessor=tree.minimum(curr->getRight());
@@ -47,15 +46,16 @@ void BST<Item>::remove(const Item& target){
 			currSuccessor->setRight(curr->getRight());
 			currSuccessor->getRight->setParent(currSuccessor);
 		}
+		btNode<Item>* oldcurr=curr;
 		transplant(curr,currSuccessor);
 		currSuccessor->setLeft(curr->getLeft());
 		currSuccessor->getLeft->setParent(currSuccessor);
+		delete oldcurr;//ask if we need to do this
 	}
-
 }
 
 template <class Item>
-void BST<Item>::transplant(btNode<Item>*& u, btNode<Item>*& v){
+void BST<Item>::transplant(btNode<Item>*& u, btNode<Item>*& v){//makes u's parent become v's parent
 	if(u->getParent()==NULL){
 		tree.shiftToRoot();
 		tree.getNode()=v;
@@ -68,7 +68,7 @@ void BST<Item>::transplant(btNode<Item>*& u, btNode<Item>*& v){
 }
 
 template <class Item>
-btNode<Item>* BST<Item>::minimum(){//test failed; check insert?
+btNode<Item>* BST<Item>::minimum(){
 	tree.shiftToRoot();
 	btNode<Item>* curr=tree.getNode();
 	while(curr->getLeft()!=NULL)
@@ -77,7 +77,7 @@ btNode<Item>* BST<Item>::minimum(){//test failed; check insert?
 }
 
 template <class Item>
-btNode<Item>* BST<Item>::maximum(){//test failed; check insert?
+btNode<Item>* BST<Item>::maximum(){
 	tree.shiftToRoot();
 	btNode<Item>* curr=tree.getNode();
 	while(curr->getRight()!=NULL)
@@ -97,4 +97,3 @@ btNode<Item>* BST<Item>::search(const Item& target){
 	return curr;	
 }
 #endif
-
