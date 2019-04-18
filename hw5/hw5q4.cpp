@@ -25,7 +25,7 @@ void BST<Item>::insert(const Item& entry){
 	if(prev==NULL)//If tree T was empty
 		tree.createFirstNode(entry);
 	else if(entry<prev->getData()){//ask why doesn't addLeft/addRight work
-		prev->setLeft(entryNode);
+		prev->setLeft(entryNode);//tree.addLeft(tree.shiftLeft(curr/prev??))
 	 }
 	else prev->setRight(entryNode);
 	count++;
