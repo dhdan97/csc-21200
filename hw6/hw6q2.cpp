@@ -32,19 +32,23 @@ void graphL<Item>::addEdge(size_t source, size_t target, int weight){
 	}
 	else{//if edges coming from this vertex already exist;insert node to tail of linked list
 		node<graphData>* newEdge=list[source];
-		while(newEdge!=NULL){
+		while(newEdge->link()!=NULL){
 			if(newEdge->data().getV()==target){//if edge you want to add already exists;overwrite graphData variables
 				newEdge->data().setW(weight);
 				return;
 			}
 			newEdge=newEdge->link();
 		}
+		if(newEdge->data().getV()==target){//if edge you want to add already exists;overwrite graphData variables
+			newEdge->data().setW(weight);
+			return;
+		}
 		graphData EdgeData;
 		EdgeData.setV(target);
 		EdgeData.setW(weight);
 		list_insert(newEdge,EdgeData);
-		newEdge=newEdge->link();
-		newEdge->set_link(NULL);
+		//newEdge=newEdge->link();
+		// newEdge->set_link(NULL);
 	}
 }
 
@@ -68,7 +72,21 @@ void graphL<Item>::removeEdge(size_t source, size_t target){
 
 template <class Item>
 void graphL<Item>::print() const{
-
+	node<Item>* printList;
+	for(size_t i=0;i<count;i++){
+		node<graphData>* graphDataList=list[i];
+		if(graphDataList==NULL){
+		cout<<label[i]<<"\n";
+		continue;	
+		}
+		cout<<label[i];
+		while(graphDataList!=NULL){
+			cout<<"->";
+			cout<<label[graphDataList->data().getV()];
+			graphDataList=graphDataList->link();
+		}
+		cout<<"\n";
+	}
 }
 
 template <class Item>
@@ -108,6 +126,13 @@ bool graphL<Item>::isEdge(size_t source, size_t target) const{
 
 template <class Item>
 node<Item>* graphL<Item>::neighbors(size_t vertex) const{
-	
+	node<graphData>* graphDataList=list[vertex];
+	node<Item>* neighborList;
+	list_head_insert(neighborList,label[graphDataList->data().getV()]);
+	while(graphDataList->link()!=NULL){
+		graphDataList=graphDataList->link();
+		list_insert(neighborList,label[graphDataList->data().getV()]);
+	}
+	return neighborList;
 }
 #endif
