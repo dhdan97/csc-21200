@@ -1,0 +1,25 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isUnivalTree(TreeNode* root){
+        bool rightUniVal=false;
+        bool leftUniVal=false;
+        if(root->left==NULL)//true bc if there is no left child the root doesn't have to compare it
+            leftUniVal=true;
+        else if(root->val==root->left->val)//if the left child val is equal to it's root val
+            leftUniVal=isUnivalTree(root->left);//true is rest of left subtree is unival
+        if(root->right==NULL)//true bc if there is no right child the root doesn't have to compare it
+            rightUniVal=true;
+        else if(root->val==root->right->val)//if the right child val is equal to it's root val
+            rightUniVal=isUnivalTree(root->right);//true if rest of right subtree is unival           
+        return (rightUniVal && leftUniVal);//false by default; will only be false if root.val!=root.right or root.val!=root.left at any node
+    }//It is important to have two additional booleans in order to vertify a unival right/left subtree before deciding if the whole tree is unival. Without these the function will end before it has a chance to check both sides. i.e if we had "return false" instead of "return (rightUniVal && leftUniVal)" and we checked the right subtree first the function would only reutrn the boolean on whether the right subtree has unival or not, before we even get to the statement checking the left subtree
+};
