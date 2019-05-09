@@ -1,5 +1,5 @@
 #ifndef LINE_CLASS_H
-#ifndef LINE_CLASS_H
+#define LINE_CLASS_H
 
 #include <iostream>
 #include <cassert>
@@ -12,7 +12,8 @@ template <class Item>
 class line
 {
 public:
-	line(point point1,point point2,Item slope,Item length);
+	line();
+	line(point point1,point point2);
 	line(const line<Item>& source);
 
 	point getPoint1() const{
