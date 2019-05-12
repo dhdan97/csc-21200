@@ -47,8 +47,6 @@ void graphL<Item>::addEdge(size_t source, size_t target, int weight){
 		EdgeData.setV(target);
 		EdgeData.setW(weight);
 		list_insert(newEdge,EdgeData);
-		//newEdge=newEdge->link();
-		// newEdge->set_link(NULL);
 	}
 }
 

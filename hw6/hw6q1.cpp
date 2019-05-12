@@ -80,7 +80,7 @@ template <class Item>
 size_t graphM<Item>::numEdges() const{
     if(count>0){
     	size_t edgesCount=0;
-    	for(size_t i=0;i<capacity;i++){//again, isn't this 'count'?
+    	for(size_t i=0;i<capacity;i++){
         	for(size_t j=0;j<capacity;j++){
             	if(matrix[i][j]!=0){//checks each weight that isn't 0;
                 edgesCount++;
