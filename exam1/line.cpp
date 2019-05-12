@@ -1,12 +1,23 @@
 #ifndef LINE_CLASS_CPP
-#ifndef LINE_CLASS_CPP
+#define LINE_CLASS_CPP
 
 #include "line.h"
 
 template <class Item>
-line<Item>::line(point point1,point point2,Item slope,Item length){
-	p1=point1;
-	p2=point2;
+line<Item>::line(){
+	p1.set_x(0);
+	p1.set_y(0);
+	p2.set_x(0);
+	p2.set_y(0);
+	slope=0;
+	length=0;
+}
+template <class Item>
+line<Item>::line(point point1,point point2){
+	p1.set_x(point1.get_x());
+	p1.set_y(point1.get_y());
+	p2.set_x(point2.get_x());
+	p2.set_y(point2.get_y());
 	slope=(p2.get_y()-p2.get_x())/(p1.get_y()-p1.get_x());
 	length=distance(p1,p2);
 }
