@@ -44,33 +44,6 @@ public:
     Item operator[ ] (size_t vertex) const
         { assert(vertex < count);
           return label[vertex]; }
-
-    bool hasCycle(graphM<Item> graph){
-        int color[graph.numVertices()];//0=white;1=gray;2=black
-        for(size_t i=0;i<graph.numVertices();i++)//make all vertices white
-            color[i]=0;
-        for(size_t i=0;i<graph.numVertices();i++){//for every vertex
-            if(color[graph.index(label[i])]==0){//if vertex color is white
-                if(dfs(graph,label[i],color))//dfs function actually checks for a cycle
-                    return true;
-            }
-        }
-        return false;
-    }
-
-    bool dfs(graphM<Item> graph,Item vertex,int& color[]){
-        color[graph.index(vertex)]=1;//set to gray
-        for(size_t i=0;i<count;i++){
-            if(color[graph.index(graph.neighbors(vertex)[i])]==3)//if black, continue
-                continue;
-            if(color[graph.index(graph.neighbors(vertex)[i])]==2)//if gray, cycle found
-                return true;
-            if(dfs(graph,graph.neighbors(vertex)[i],color))//recusively checks the rest
-                                                           //of vertex's neighbors
-                return true;
-        }
-        return false;
-    }
 private:
     Item* label;
     int** matrix;
