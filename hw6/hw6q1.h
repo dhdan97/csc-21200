@@ -60,7 +60,7 @@ public:
 
     bool dfs(graphM<Item> graph,Item vertex,int& color[]){
         color[graph.index(vertex)]=1;//set to gray
-        for(size_t i=0;i<count;i++){
+        for(size_t i=0;i<count;i++){//for each neighbor of the vertex
             if(color[graph.index(graph.neighbors(vertex)[i])]==3)//if black, continue
                 continue;
             if(color[graph.index(graph.neighbors(vertex)[i])]==2)//if gray, cycle found
